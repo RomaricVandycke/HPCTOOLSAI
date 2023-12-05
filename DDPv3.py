@@ -69,19 +69,19 @@ class PimaClassifier(nn.Module):
 
 # Training function
 def train_with_args(rank, world_size, args):
-    # Setup process group
+    
     setup(rank, world_size)
 
-    # Set device for this process
+   
     torch.cuda.set_device(rank)
 
-    # Create model, wrap it in DistributedDataParallel
+    
     model = PimaClassifier().cuda(rank)
     ddp_model = DDP(model, device_ids=[rank])
 
     print(ddp_model)
 
-    # Train the model
+    
     loss_fn = nn.BCELoss()  # Binary cross entropy
     optimizer = optim.Adam(ddp_model.parameters(), lr=args.lr)
 
@@ -97,10 +97,9 @@ def train_with_args(rank, world_size, args):
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-            dist.barrier()  # synchronize all processes after each batch
+            dist.barrier()  
 
-        # Uncomment below to print loss per epoch
-        # print(f'Finished epoch {epoch}, latest loss {loss.item()}')
+        
     temp_fin= time()
     print("time train = ", temp_fin - temps_init)
     cleanup()
@@ -120,7 +119,7 @@ def main():
                         help='For Saving the current Model')
     args = parser.parse_args()
 
-    world_size = 2  # Vous pouvez définir le nombre de processus ici
+    world_size = 2  
     mp.spawn(train_with_args, args=(world_size, args), nprocs=world_size, join=True)
 
 if __name__ == '__main__':
