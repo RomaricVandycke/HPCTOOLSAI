@@ -16,6 +16,6 @@ The neural network consist of 1 input layer 2 hidden layer and 1 output layer. I
 
 Function Train_with_args initialize a model of the class PimaClassifier inside the DDP. I Used Binary Cross entropy as Loss function and Adam as Optimizer (Commonly used in my degree..)
 
-to launch the code just write: sbatch DDPv3.sh
+to launch the code just write: sbatch DDPv3.sh I obtain a run time of 45seconds after 10 batch submitted
 
 Of Course don't forget to change the path to the csv file in the first Lines of DDPv3.py
